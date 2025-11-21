@@ -98,7 +98,7 @@ function OLXStyleCategories() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await api.get("categories?active=true&withSub=true");
+      const res = await api.get("categories?active=true&withSub=true", { auth: false });
       const data = res?.data;
 
       let list: Category[] = [];
