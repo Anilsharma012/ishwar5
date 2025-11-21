@@ -26,7 +26,7 @@ export default function HomepageBanner({
         setLoading(true);
         const apiRes = await (window as any).api(
           `/banners?active=true&position=${encodeURIComponent(position)}&status=approved&isFeatured=true`,
-          { timeout: 8000 }
+          { timeout: 8000, auth: false }
         );
 
         if (apiRes?.ok && apiRes.json?.success && Array.isArray(apiRes.json.data)) {
