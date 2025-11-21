@@ -26,17 +26,28 @@ export default function HomepageBanner({
         setLoading(true);
         const apiRes = await (window as any).api(
           `/banners?active=true&position=${encodeURIComponent(position)}&status=approved&isFeatured=true`,
-          { timeout: 8000 }
+          { timeout: 8000, auth: false },
         );
 
-        if (apiRes?.ok && apiRes.json?.success && Array.isArray(apiRes.json.data)) {
+        if (
+          apiRes?.ok &&
+          apiRes.json?.success &&
+          Array.isArray(apiRes.json.data)
+        ) {
           // only this position; keep items that have an image
           // filter for approved & featured (server-side filtered, but double-check client-side)
           const list = (apiRes.json.data as BannerAd[])
             .filter((b: any) => (b as any).position === position)
             .filter((b: any) => (b as any).imageUrl || (b as any).image)
-            .filter((b: any) => (b as any).status === "approved" || !(b as any).status)
-            .filter((b: any) => (b as any).isFeatured === true || (b as any).isFeatured === undefined);
+            .filter(
+              (b: any) =>
+                (b as any).status === "approved" || !(b as any).status,
+            )
+            .filter(
+              (b: any) =>
+                (b as any).isFeatured === true ||
+                (b as any).isFeatured === undefined,
+            );
 
           if (mounted) {
             setBanners(list);
@@ -59,9 +70,12 @@ export default function HomepageBanner({
   // Auto-slide
   useEffect(() => {
     if (paused || banners.length <= 1) return;
-    timerRef.current = window.setInterval(() => {
-      setIdx((p) => (p + 1) % banners.length);
-    }, Math.max(1500, intervalMs));
+    timerRef.current = window.setInterval(
+      () => {
+        setIdx((p) => (p + 1) % banners.length);
+      },
+      Math.max(1500, intervalMs),
+    );
     return () => {
       if (timerRef.current) window.clearInterval(timerRef.current);
     };
@@ -115,7 +129,7 @@ export default function HomepageBanner({
                 onError={(e) => {
                   const t = e.target as HTMLImageElement;
                   t.src = `https://via.placeholder.com/1200x320/f97316/ffffff?text=${encodeURIComponent(
-                    b.title || "Banner"
+                    b.title || "Banner",
                   )}`;
                 }}
               />
@@ -146,7 +160,12 @@ export default function HomepageBanner({
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </div>
           )}
@@ -173,7 +192,9 @@ export default function HomepageBanner({
       </div>
 
       {process.env.NODE_ENV === "development" && (
-        <div className="text-xs text-gray-500 mt-1 text-center">Banner: {position}</div>
+        <div className="text-xs text-gray-500 mt-1 text-center">
+          Banner: {position}
+        </div>
       )}
     </div>
   );
