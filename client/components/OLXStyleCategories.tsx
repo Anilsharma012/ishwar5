@@ -98,7 +98,9 @@ function OLXStyleCategories() {
   const fetchCategories = async () => {
     try {
       setLoading(true);
-      const res = await api.get("categories?active=true&withSub=true", { auth: false });
+      const res = await api.get("categories?active=true&withSub=true", {
+        auth: false,
+      });
       const data = res?.data;
 
       let list: Category[] = [];
@@ -196,13 +198,11 @@ function OLXStyleCategories() {
           {(categories || []).map((category, index) => {
             if (!category?.name) return null;
 
-            const IconComponent =
-              categoryIcons[category.name] || Building2;
+            const IconComponent = categoryIcons[category.name] || Building2;
             const isActive = activeCat?.slug === category.slug;
 
             const isSell =
-              norm(category.slug) === "sell" ||
-              norm(category.name) === "sell";
+              norm(category.slug) === "sell" || norm(category.name) === "sell";
 
             return (
               <div
