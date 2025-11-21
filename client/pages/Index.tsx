@@ -32,10 +32,10 @@ export default function Index() {
 
         if (!Array.isArray(data?.data) || data.data.length === 0) {
           // If no banners exist, initialize them
-          await fetch("/api/admin/advertisement-banners/initialize", {
+          await fetch("/api/banners/initialize", {
             method: "POST",
           }).catch(() => {
-            // Silently fail if not admin - banners will use defaults
+            // Silently fail - banners will use defaults
           });
         }
       } catch (error) {
